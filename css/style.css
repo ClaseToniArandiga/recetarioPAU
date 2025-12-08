@@ -1,0 +1,337 @@
+/* IMPORT */
+@import url('normalize.css');
+@import url('reset.css');
+/* @import url('cookies.css'); */
+
+/* Variables de color */
+:root {
+    --color-primary: #ff6b35;
+    --color-text: #2d3748;
+    --color-text-light: #718096;
+    --color-bg: #f7fafc;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    background-color: var(--color-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 20px;
+}
+
+/* Tarjeta de receta */
+.recipe-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Contenedor de imagen con botón */
+.recipe-image {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+}
+
+.recipe-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+/* Oscurecer imagen al hacer hover */
+.recipe-image:hover img {
+    transform: scale(1.05);
+    filter: brightness(0.7);
+}
+
+/* Botón centrado sobre la imagen - OCULTO por defecto */
+.boton-centrado {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    padding: 12px 30px;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: var(--color-text);
+    border: 2px solid white;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: capitalize;
+    z-index: 10;
+    
+    /* Sombra sutil */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    
+    /* OCULTO por defecto */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Mostrar botón al pasar ratón sobre .recipe-image */
+.recipe-image:hover .boton-centrado {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Información de la receta */
+.recipe-info {
+    padding: 24px;
+}
+
+.recipe-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 16px;
+    line-height: 1.3;
+}
+
+/* Detalles (tiempo, calorías, rating) */
+.recipe-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.detail {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    color: var(--color-text-light);
+    font-weight: 500;
+}
+
+.detail .icon {
+    font-size: 18px;
+}
+
+/* Colores específicos para cada detalle */
+.detail.time .icon {
+    color: #f6ad55;
+}
+
+.detail.calories .icon {
+    color: #48bb78;
+}
+
+.detail.rating .icon {
+    color: #ecc94b;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .recipe-card {
+        border-radius: 12px;
+    }
+    
+    .recipe-image {
+        height: 250px;
+    }
+    
+    .recipe-title {
+        font-size: 20px;
+    }
+    
+    .recipe-details {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .boton-centrado {
+        font-size: 14px;
+        padding: 10px 24px;
+    }
+}
+
+/* MODAL / POPUP */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: white;
+    margin: 3% auto;
+    padding: 0;
+    border-radius: 16px;
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--color-primary);
+}
+
+.modal-header {
+    padding: 30px 30px 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.modal-header h2 {
+    margin: 0 0 15px 0;
+    font-size: 32px;
+    color: var(--color-text);
+    font-weight: 700;
+}
+
+.modal-info {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.modal-detail {
+    font-size: 16px;
+    color: var(--color-text-light);
+    font-weight: 500;
+}
+
+.modal-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-body section {
+    margin-bottom: 30px;
+}
+
+.modal-body h3 {
+    font-size: 24px;
+    color: var(--color-text);
+    margin-bottom: 15px;
+    font-weight: 700;
+    border-left: 4px solid var(--color-primary);
+    padding-left: 15px;
+}
+
+.ingredients ul,
+.instructions ol,
+.tips ul {
+    margin: 0;
+    padding-left: 25px;
+}
+
+.ingredients li,
+.instructions li,
+.tips li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: var(--color-text-light);
+    font-size: 16px;
+}
+
+.instructions li {
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+
+.tips {
+    background-color: #fff8e1;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #ffc107;
+}
+
+.tips h3 {
+    border-left-color: #ffc107;
+}
+
+/* Responsive Modal */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+    
+    .modal-header {
+        padding: 20px;
+    }
+    
+    .modal-header h2 {
+        font-size: 24px;
+    }
+    
+    .modal-image {
+        height: 250px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .modal-body h3 {
+        font-size: 20px;
+    }
+}
